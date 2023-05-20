@@ -1,0 +1,51 @@
+<header class="modal-header bg-success text-bg-success">
+    <div class="row w-100">
+        <div class="col-11">
+            <h3 class="modal-title">Confirm Order</h3>
+        </div>
+       
+        <div class="col-1 justify-content-end">
+            <button type="button" class="btn p-0 close" data-dismiss="alert" (click)="cancel()">
+                &times;
+            </button>
+        </div>
+    </div>
+</header>
+
+
+<div class="modal-body">
+<div class="row item-container" *ngFor="let item of selectedItems">
+    <div class="col-4 img-container">
+        <img src="{{item.thumbnail}}" class="card-img-top" alt="{{item.title}}">
+    </div>
+    <div class="col-8" >
+        <h4 class="text-success">{{item.title}}</h4>
+        <h6 class="text-secondary">{{item.category}}</h6>
+        <h6>{{item.price}} $</h6>
+
+    </div>
+</div>
+
+<div class="row mt-2">
+    <div class="col-12 text-center">
+        <h2>Total Price: {{totalPrice}} $</h2>
+    </div>
+</div>
+  </div>
+
+
+
+  <footer class="modal-footer">
+    <div class="col-12 text-right">
+      <button type="button" class="btn btn-success" (click)="confirmOrder()">
+      Confirm
+
+      </button>
+      <button type="button"  class="btn btn-outline-danger" data-dismiss="modal"
+        (click)="cancel()">
+       Cancel
+
+      </button>
+    </div>
+
+  </footer>

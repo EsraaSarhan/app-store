@@ -1,0 +1,95 @@
+
+
+<ng-container  *ngIf="role === 'user' && !loading">
+    <section class="container">
+        <div class="row mt-5">
+            <div class="col-12 col-md-6">
+                <h2 *ngIf="!selectedCategory.value">All Categories</h2>
+                <h2 *ngIf="selectedCategory.value">{{selectedCategory.value}}</h2>
+            </div>
+    
+            <div class="col-12 col-md-6">
+                <select class="form-select" #selectedCategory aria-label="Category" (change)="filterByCategory(selectedCategory.value)">
+                    <option selected value="">All Category</option>
+                    <option *ngFor="let cat of allCategories" value="{{cat}}" >{{cat}}</option>
+                  </select>
+            </div>
+        </div>
+    </section>
+    <section class="container mt-5">
+        <div class="row padding-bottom-80">
+            <div class="col-12 col-sm-6 col-md-3 mb-4" *ngFor="let item of allProducts">
+                <app-product-details [item]="item" (cartUpdated)="onCartUpdated()"></app-product-details>
+            </div>
+        </div>
+    </section>
+    
+    <section class="container price-section">
+        <div class="row justify-content-around">
+            <div class="col-12 text-center">
+                <span>Total price: {{totalPrice}}   </span>         
+                 <button (click)="placeOrder()" *ngIf="totalPrice > 0" class="btn btn-outline-primary mx-5">Place Order</button>
+    
+            </div>
+           
+        </div>
+    </section>
+    
+</ng-container>
+
+
+<ng-container *ngIf="role === 'admin' && !loading">
+    <section class="container mt-5">
+        <div class="row mb-3">
+            <div class="col-12 text-end">
+                <button class="btn btn-dark" (click)="addProduct()"><i class="fa-solid fa-circle-plus"></i>Add New Product</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="mat-elevation-z8">
+                    <table mat-table [dataSource]="dataSource" class="table table-responsive table-striped table-bordered">
+                  
+                      <!-- Id Column -->
+                      <ng-container matColumnDef="id">
+                        <th mat-header-cell *matHeaderCellDef> Id. </th>
+                        <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+                      </ng-container>
+                  
+                      <!-- Title Column -->
+                      <ng-container matColumnDef="title">
+                        <th mat-header-cell *matHeaderCellDef> Title </th>
+                        <td mat-cell *matCellDef="let element"> {{element.title}} </td>
+                      </ng-container>
+                  
+                      <!-- price Column -->
+                      <ng-container matColumnDef="price">
+                        <th mat-header-cell *matHeaderCellDef> Price </th>
+                        <td mat-cell *matCellDef="let element"> {{element.price}} </td>
+                      </ng-container>
+                  
+                      <!-- category Column -->
+                      <ng-container matColumnDef="category">
+                        <th mat-header-cell *matHeaderCellDef> Category </th>
+                        <td mat-cell *matCellDef="let element"> {{element.category}} </td>
+                      </ng-container>
+                  
+                      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                    </table>
+                  
+                    <!-- <mat-paginator [pageSizeOptions]="[5, 10, 20]"
+                                   showFirstLastButtons 
+                                   aria-label="Select page of periodic elements">
+                    </mat-paginator> -->
+                  </div>
+            </div>
+        </div>
+    </section>
+      
+</ng-container>
+
+
+<ng-container *ngIf="loading">
+    <div class="lds-grid"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+</ng-container>
