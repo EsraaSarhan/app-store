@@ -44,5 +44,6 @@ import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 export class AppModule { }
 
 export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
+  console.log("asasass")
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
