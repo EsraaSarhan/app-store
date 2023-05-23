@@ -60,7 +60,7 @@ export class ProductsListComponent implements OnInit {
   
     }
     else{
-        window.location.href = '/Login';
+        window.location.href = '/app-store/Login';
     }
   }
 
