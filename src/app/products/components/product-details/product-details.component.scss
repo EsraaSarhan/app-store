@@ -51,6 +51,10 @@ button {
     height: 300px;
     width: 100%;
     /* border: solid; */
+    &:hover{
+        transform: scale(1.1);
+        transition: transform ease-in 0.5s;
+    }
 }
 
 img.card-img-top {

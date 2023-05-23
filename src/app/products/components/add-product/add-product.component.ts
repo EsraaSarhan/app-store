@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ProductsService } from '../../services/products.service';
 import { ToastrService } from 'ngx-toastr';
+import { IProduct } from '../../dataModels/product';
+import { TranslateService } from '@ngx-translate/core';
+import { StorageService } from 'src/app/shared/_services/storage.service';
 
 @Component({
   selector: 'app-add-product',
@@ -20,14 +23,19 @@ export class AddProductComponent implements OnInit {
 
   public allCategories: any =  [];
 
+  public inEditMode: boolean = false;
   loading:boolean = false;
-  constructor(public modal: NgbActiveModal, private productService: ProductsService,private toastr: ToastrService,
+  constructor(private translate: TranslateService, public modal: NgbActiveModal, private productService: ProductsService,private toastr: ToastrService, private storageService: StorageService
     ) { 
       this.getCategoriesList();
     }
 
   ngOnInit(): void {
+    if(this.form.title){
+      this.inEditMode = true;
+    }
   }
+
 
   onSubmit(): void {
     this.loading = true;
@@ -53,16 +61,32 @@ export class AddProductComponent implements OnInit {
 
   saveProduct(){
     console.log(this.form);
-    this.productService.addProduct(this.form).subscribe(
-      res=>{
-        console.log(res);
-        this.toastr.success("Product added successfully");
-        this.cancel();
-
-      },
-      err=>{
-
-      }
-    )
+    if(this.inEditMode){
+      this.productService.updateProduct(this.form).subscribe(
+        res=>{
+          console.log(res);
+          this.toastr.success("Product Updated successfully");
+          this.cancel();
+  
+        },
+        err=>{
+  
+        }
+      )
+    }
+    else{
+      this.productService.addProduct(this.form).subscribe(
+        res=>{
+          console.log(res);
+          this.toastr.success("Product added successfully");
+          this.cancel();
+  
+        },
+        err=>{
+  
+        }
+      )
+    }
+    
   }
 }

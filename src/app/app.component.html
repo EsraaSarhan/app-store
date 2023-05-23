@@ -3,12 +3,20 @@
       <a href="#" class="navbar-brand">AppStore</a>
       <ul class="navbar-nav mr-auto" routerLinkActive="active">
         <li class="nav-item">
-          <a href="/ProductsList" class="nav-link" routerLink="ProductsList">Products List</a>
+          <a href="/ProductsList" class="nav-link" routerLink="ProductsList">{{'ProductsList' | translate}}</a>
         </li>
         <li class="nav-item" *ngIf="isAdmin">
-          <a href="javascript:void(0)" (click)="addProduct()" class="nav-link">Add Product</a>
+          <a href="javascript:void(0)" (click)="addProduct()" class="nav-link">{{'AddProduct' | translate}}</a>
         </li>
-        
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="javascript:void(0)" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            {{'Language' | translate}}
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="javascript:void(0)" (click)="changLanguage('en')">English</a></li>
+            <li><a class="dropdown-item" href="javascript:void(0)" (click)="changLanguage('ar')">العربية</a></li>
+          </ul>
+        </li>
       </ul>
   
      
@@ -17,7 +25,7 @@
           <a href="/profile" class="nav-link" routerLink="profile">{{ username }}</a>
         </li>
         <li class="nav-item">
-          <a href class="nav-link" (click)="logout()">Log out</a>
+          <a href class="nav-link" (click)="logout()">{{'LogOut' | translate}}</a>
         </li>
       </ul>
     </nav>

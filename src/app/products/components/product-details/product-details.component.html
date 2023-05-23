@@ -7,8 +7,8 @@
       <h6 class="product-category">{{item.category}}</h6>
       <h6><span class="regular-price">{{item.price}} $</span></h6>
       <!-- <p class="card-text">{{item.description}}</p> -->
-      <button (click)="addToCard()" *ngIf="!item.isAddedToCart" class="btn btn btn-success">Add to cart</button>
-      <button (click)="removeFromCard()" *ngIf="item.isAddedToCart" class="btn btn-outline-danger">Remove from cart</button>
+      <button (click)="addToCard()" *ngIf="!item.isAddedToCart" class="btn btn btn-success">{{'AddToCard' | translate}}</button>
+      <button (click)="removeFromCard()" *ngIf="item.isAddedToCart" class="btn btn-outline-danger">{{'RemoveFromCard' | translate}}</button>
 
      
     </div>

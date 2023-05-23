@@ -1,22 +1,22 @@
 
 
-<ng-container  *ngIf="role === 'user' && !loading">
+<ng-container  *ngIf="role === 'user'">
     <section class="container">
         <div class="row mt-5">
             <div class="col-12 col-md-6">
-                <h2 *ngIf="!selectedCategory.value">All Categories</h2>
+                <h2 *ngIf="!selectedCategory.value">{{'AllCategories' | translate}}</h2>
                 <h2 *ngIf="selectedCategory.value">{{selectedCategory.value}}</h2>
             </div>
     
             <div class="col-12 col-md-6">
-                <select class="form-select" #selectedCategory aria-label="Category" (change)="filterByCategory(selectedCategory.value)">
-                    <option selected value="">All Category</option>
+                <select class="form-select" #selectedCategory aria-label="Category" (change)="filterByCategory(selectedCategory.value)" [disabled]="loading">
+                    <option selected value="">{{'AllCategories' | translate}}</option>
                     <option *ngFor="let cat of allCategories" value="{{cat}}" >{{cat}}</option>
                   </select>
             </div>
         </div>
     </section>
-    <section class="container mt-5">
+    <section class="container mt-5" *ngIf="!loading">
         <div class="row padding-bottom-80">
             <div class="col-12 col-sm-6 col-md-3 mb-4" *ngFor="let item of allProducts">
                 <app-product-details [item]="item" (cartUpdated)="onCartUpdated()"></app-product-details>
@@ -27,8 +27,8 @@
     <section class="container price-section">
         <div class="row justify-content-around">
             <div class="col-12 text-center">
-                <span>Total price: {{totalPrice}}   </span>         
-                 <button (click)="placeOrder()" *ngIf="totalPrice > 0" class="btn btn-outline-primary mx-5">Place Order</button>
+                <span>{{'TotalPrice'| translate}}: {{totalPrice}}   </span>         
+                 <button (click)="placeOrder()" *ngIf="totalPrice > 0" class="btn btn-outline-primary mx-5">{{'PlaceOrder' | translate}}</button>
     
             </div>
            
@@ -42,7 +42,7 @@
     <section class="container mt-5">
         <div class="row mb-3">
             <div class="col-12 text-end">
-                <button class="btn btn-dark" (click)="addProduct()"><i class="fa-solid fa-circle-plus"></i>Add New Product</button>
+                <button class="btn btn-dark" (click)="addProduct()"><i class="fa-regular fa-plus me-2"></i>{{'AddProduct' | translate}}</button>
             </div>
         </div>
         <div class="row">
@@ -52,26 +52,37 @@
                   
                       <!-- Id Column -->
                       <ng-container matColumnDef="id">
-                        <th mat-header-cell *matHeaderCellDef> Id. </th>
+                        <th mat-header-cell *matHeaderCellDef> {{'Id' | translate}}. </th>
                         <td mat-cell *matCellDef="let element"> {{element.id}} </td>
                       </ng-container>
                   
                       <!-- Title Column -->
                       <ng-container matColumnDef="title">
-                        <th mat-header-cell *matHeaderCellDef> Title </th>
+                        <th mat-header-cell *matHeaderCellDef>  {{'Title' | translate}}</th>
                         <td mat-cell *matCellDef="let element"> {{element.title}} </td>
                       </ng-container>
                   
                       <!-- price Column -->
                       <ng-container matColumnDef="price">
-                        <th mat-header-cell *matHeaderCellDef> Price </th>
+                        <th mat-header-cell *matHeaderCellDef> {{'Price' | translate}} </th>
                         <td mat-cell *matCellDef="let element"> {{element.price}} </td>
                       </ng-container>
                   
                       <!-- category Column -->
                       <ng-container matColumnDef="category">
-                        <th mat-header-cell *matHeaderCellDef> Category </th>
+                        <th mat-header-cell *matHeaderCellDef> {{'Category' | translate}} </th>
                         <td mat-cell *matCellDef="let element"> {{element.category}} </td>
+                      </ng-container>
+
+                       <!-- actions Column -->
+                       <ng-container matColumnDef="actions">
+                        <th mat-header-cell *matHeaderCellDef>  {{'Actions' | translate}}</th>
+                        <td mat-cell *matCellDef="let element"> 
+                            <button (click)="editProduct(element)" title="edit product" class="btn"><i class="fa-regular fa-edit me-2"></i></button>
+
+                            <button (click)="deleteProduct(element)" title="delete product" class="btn text-danger"><i class="fa-regular fa-trash me-2"></i></button>
+
+                        </td>
                       </ng-container>
                   
                       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

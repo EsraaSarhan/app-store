@@ -19,7 +19,6 @@ export class StorageService {
 
   public getUser(): any {
     const user = window.sessionStorage.getItem(USER_KEY);
-    console.log(user)
     if (user) {
       return JSON.parse(user);
     }
@@ -27,6 +26,14 @@ export class StorageService {
     return {};
   }
 
+  public changeUserLanguage(langugae: any){
+    let user = window.sessionStorage.getItem(USER_KEY);
+    if(user){
+      let currentUser = JSON.parse(user);
+      currentUser.PreferedLanguage = langugae;
+      this.saveUser(currentUser)
+    }
+  }
   public isLoggedIn(): boolean {
     const user = window.sessionStorage.getItem(USER_KEY);
     if (user) {

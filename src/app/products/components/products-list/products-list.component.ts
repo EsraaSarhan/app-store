@@ -8,6 +8,8 @@ import {MatPaginator} from '@angular/material/paginator';
 import {MatTableDataSource} from '@angular/material/table';
 import { IProduct } from '../../dataModels/product';
 import { AddProductComponent } from '../add-product/add-product.component';
+import { ToastrService } from 'ngx-toastr';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-products-list',
@@ -28,9 +30,12 @@ export class ProductsListComponent implements OnInit {
 
   public loading: boolean = false;
 
-  public displayedColumns: string[] = ['id', 'title', 'price', 'category'];
+  public displayedColumns: string[] = ['id', 'title', 'price', 'category', 'actions'];
 
   public dataSource = new MatTableDataSource<IProduct>(this.ELEMENT_DATA);
+    dataToDisplay = [...this.ELEMENT_DATA];
+
+
 
   @ViewChild(MatPaginator)
   paginator!: MatPaginator;
@@ -39,15 +44,20 @@ export class ProductsListComponent implements OnInit {
     this.dataSource.paginator = this.paginator;
   }
   
-  constructor(private productService: ProductsService, private modalService: NgbModal, private storageService: StorageService) {
+  constructor(private productService: ProductsService, private modalService: NgbModal, private storageService: StorageService, private toastrService: ToastrService, private translate: TranslateService) {
+    translate.setDefaultLang('en');
+
     this.getCategoriesList();
-    this.getAllProducats();
+    this.getAllProducats(0);
    }
 
   ngOnInit(): void {
     if (this.storageService.isLoggedIn()) {
       this.isLoggedIn = true;
       this.role = this.storageService.getUser().Role;
+        const user = this.storageService.getUser();
+       this.translate.use(user.PreferedLanguage);
+  
     }
     else{
         window.location.href = '/Login';
@@ -66,14 +76,19 @@ export class ProductsListComponent implements OnInit {
     )
   }
 
-  getAllProducats(){
+  getAllProducats(id: number){
     this.loading = true;
     this.productService.getProducts(this.pageNumber, this.pageSize).subscribe(
       res=>{
         this.loading = false;
-
+console.log(res)
         if(this.role === 'admin'){
           //this.ELEMENT_DATA = res;
+          if(id > 0){
+let index = _.findIndex(res, {id: id});
+res = res.slice(index, -1)//_.without(res, {id: 1})
+
+          }
           this.dataSource = res;
         }
         else if(this.role === 'user'){
@@ -100,7 +115,7 @@ export class ProductsListComponent implements OnInit {
       )
     }
     else{
-      this.getAllProducats();
+      this.getAllProducats(0);
     }
   }
 
@@ -144,5 +159,26 @@ export class ProductsListComponent implements OnInit {
 
   addProduct(){
     const addModalRef = this.modalService.open(AddProductComponent, { size: 'lg', backdrop: 'static' });
+  }
+
+  editProduct(product: IProduct){
+    const addModalRef = this.modalService.open(AddProductComponent, { size: 'lg', backdrop: 'static' });
+    addModalRef.componentInstance.form = product;
+
+    
+
+
+  }
+
+  deleteProduct (product: any){
+   this.productService.deleteProduct(product.id).subscribe(
+    res=>{
+      this.toastrService.success("Product deleted successfully");
+      this.getAllProducats(product.id)
+//console.log(this.dataSource.slice(0,-1))
+     // this.dataSource = _.without(this.dataSource, {id: product.id});
+        }
+   )
+
   }
 }

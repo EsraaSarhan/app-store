@@ -1,10 +1,10 @@
 <header class="modal-header text-bg-dark">
     <div class="row w-100">
         <div class="col-11">
-            <h3 class="modal-title">Add New Product</h3>
+            <h3 class="modal-title">{{'AddProduct' | translate}}</h3>
         </div>
        
-        <div class="col-1 justify-content-end text-end">
+        <div class="col-1 justify-content-end text-end" *ngIf="!inEditMode">
             <button type="button" class="btn p-0 close" data-dismiss="alert" (click)="cancel()">
                 &times;
             </button>
@@ -21,28 +21,28 @@
     novalidate
   >
     <div class="form-group">
-      <label for="title">Title</label>
+      <label for="title">{{'Title' | translate}}</label>
       <input
         type="text"
         class="form-control"
         name="title"
-        placeholder="Product title"
+        placeholder="{{'Title' | translate}}"
         [(ngModel)]="form.title"
         required
         #title="ngModel"
         [ngClass]="{ 'is-invalid': f.submitted && title.errors }"
       />
       <div *ngIf="title.errors && f.submitted" class="invalid-feedback">
-        title is required!
+        {{'TitleRequired' | translate}}
       </div>
     </div>
     <div class="form-group">
-      <label for="description">description</label>
+      <label for="description">{{'Description' | translate}}</label>
       <textarea
         type="text"
         class="form-control"
         name="description"
-        placeholder="Enter your description"
+        placeholder="{{'Description' | translate}}"
         [(ngModel)]="form.description"
         required
         minlength="10"
@@ -62,35 +62,38 @@
     </div>
 
     <div class="form-group">
-        <label for="price">price</label>
+        <label for="price">{{'Price' | translate}}</label>
         <input
           type="number"
           class="form-control"
           name="price"
-          placeholder="Product price"
+          placeholder="{{'Price' | translate}}"
           [(ngModel)]="form.price"
           required
           #price="ngModel"
           [ngClass]="{ 'is-invalid': f.submitted && price.errors }"
         />
         <div *ngIf="price.errors && f.submitted" class="invalid-feedback">
-            price is required!
+          {{'PriceRequired' | translate}}
+
         </div>
       </div>
 
       <div class="form-group">
-        <label for="category">category</label>
-        <select class="form-select" #category="ngModel" required aria-label="Category" [(ngModel)]="form.category" name="category">
+        <label for="category">{{'Category' | translate}}</label>
+        <select class="form-select" #category="ngModel" required aria-label="Category"  [(ngModel)]="form.category" name="category">
             <option *ngFor="let cat of allCategories" value="{{cat}}" >{{cat}}</option>
           </select>
 
         <div *ngIf="category.errors && f.submitted" class="invalid-feedback">
-            category is required!
+            {{'TitleRequired' | translate}}
         </div>
       </div>
 
       <button class="btn btn-primary btn-block w-100" [disabled]="loading">
-        Save
+        <span *ngIf="!inEditMode">{{'AddProduct' | translate}}</span>
+        <span *ngIf="inEditMode">{{'UpdateProduct' | translate}}</span>
+      
       </button>
 
   </form>

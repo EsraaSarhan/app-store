@@ -45,7 +45,7 @@ export class ProductsService {
 
   updateProduct(product: IProduct){
     //https://fakestoreapi.com/products/7
-    return this.http.put<IProduct>('https://fakestoreapi.com/products' , product);
+    return this.http.put<IProduct>('https://fakestoreapi.com/products/' + product.id , product);
 
   }
 

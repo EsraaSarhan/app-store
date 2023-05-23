@@ -10,6 +10,9 @@ import { ReceiptComponent } from './components/receipt/receipt.component';
 import { PriceReducedPipe } from './pipes/price-reduced.pipe';
 import { AddProductComponent } from './components/add-product/add-product.component';
 import { FormsModule } from '@angular/forms';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 
 
 @NgModule({
@@ -26,6 +29,18 @@ import { FormsModule } from '@angular/forms';
     NgbModule,
     MatTableModule,
     MatPaginatorModule,
-    FormsModule  ]
+    FormsModule ,
+    HttpClientModule,
+    TranslateModule.forRoot({
+        loader: {
+            provide: TranslateLoader,
+            useFactory: HttpLoaderFactory,
+            deps: [HttpClient]
+        }
+    }) ]
 })
 export class ProductsModule { }
+
+export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
+  return new TranslateHttpLoader(http);
+}
