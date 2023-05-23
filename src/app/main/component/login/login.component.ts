@@ -29,7 +29,7 @@ export class LoginComponent implements OnInit {
     if (this.storageService.isLoggedIn()) {
       this.isLoggedIn = true;
       this.username = this.storageService.getUser().UserName;
-      window.location.href = '/ProductsList';
+      window.location.href = '/app-store/ProductsList';
     }
 
    }
