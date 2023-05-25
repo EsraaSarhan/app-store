@@ -20,7 +20,6 @@ export class LoginComponent implements OnInit {
   loading:boolean = false;
 
   constructor(private authService: AuthService, private storageService: StorageService) {
-    console.log("asssss")
 
    }
 
@@ -38,7 +37,7 @@ export class LoginComponent implements OnInit {
     this.loading = true;
     const { username, password } = this.form;
 
-    this.authService.login(username, password).subscribe({
+    this.authService.login(this.form).subscribe({
       next: data => {
         this.loading = false;
        if(data.length){
@@ -48,7 +47,6 @@ export class LoginComponent implements OnInit {
         this.isLoginFailed = false;
         this.isLoggedIn = true;
         this.username = this.storageService.getUser().UserName;
-        console.log(this.username)
         this.reloadPage();
        }
        else{

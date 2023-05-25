@@ -15,9 +15,10 @@ export class AuthService {
 
   constructor(private http: HttpClient) {}
 
-  login(username: string, password: string): Observable<any> {
+  login(user: any): Observable<any> {
+
     return this.http.get(
-      AUTH_API + '?UserName=' + username + '&Password=' + password
+      AUTH_API + '?UserName=' + user.username + '&Password=' + user.password
     );
   }
 

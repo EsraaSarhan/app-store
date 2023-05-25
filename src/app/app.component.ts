@@ -13,7 +13,6 @@ import {TranslateService} from "@ngx-translate/core";
 export class AppComponent {
   title = 'shopping-cart';
 
-  private role: string = '';
   isLoggedIn = false;
   isAdmin = false;
   isUser = false;
@@ -21,21 +20,19 @@ export class AppComponent {
 
   constructor(private translate: TranslateService, private storageService: StorageService, private authService: AuthService, private modalService: NgbModal) {
     translate.setDefaultLang('en');
-    //translate.use('en');
   }
   ngOnInit(): void {
-    this.isLoggedIn = this.storageService.isLoggedIn();
+    this.checkLoggedUser();
+  }
 
+  checkLoggedUser(){
+    this.isLoggedIn = this.storageService.isLoggedIn();
     if (this.isLoggedIn) {
       const user = this.storageService.getUser();
-      this.role = user.Role;
-
-      this.isAdmin = this.role === 'admin';
-      this.isUser = this.role === 'user';
-
+      this.isAdmin = user.Role === 'admin';
+      this.isUser = user.Role === 'user';
       this.username = user.username;
       this.translate.use(user.PreferedLanguage);
-
       this.changeUILAng(user.PreferedLanguage);
 
     }
@@ -43,7 +40,6 @@ export class AppComponent {
 
   logout(): void {
     this.storageService.clean();
-
         window.location.reload();
   }
 
@@ -53,7 +49,6 @@ export class AppComponent {
   }
 
   changLanguage(selecetedLanguage: string){
-    console.log(selecetedLanguage);
     this.storageService.changeUserLanguage(selecetedLanguage);
     this.translate.use(selecetedLanguage);
     

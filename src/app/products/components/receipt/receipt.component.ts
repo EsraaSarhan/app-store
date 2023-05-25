@@ -18,7 +18,6 @@ export class ReceiptComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    
   }
 
   getUserCart(){

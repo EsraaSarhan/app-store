@@ -1,7 +1,7 @@
-import { Component, OnInit, ViewChild , AfterViewInit} from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import * as _ from 'underscore';
 import { ProductsService } from '../../services/products.service';
-import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ReceiptComponent } from '../receipt/receipt.component';
 import { StorageService } from 'src/app/shared/_services/storage.service';
 import {MatPaginator} from '@angular/material/paginator';
@@ -67,7 +67,6 @@ export class ProductsListComponent implements OnInit {
   getCategoriesList(){
     this.productService.getAllCategories().subscribe(
       res=>{
-        console.log(res);
         this.allCategories = res;
       },
       err=>{
@@ -81,9 +80,7 @@ export class ProductsListComponent implements OnInit {
     this.productService.getProducts(this.pageNumber, this.pageSize).subscribe(
       res=>{
         this.loading = false;
-console.log(res)
         if(this.role === 'admin'){
-          //this.ELEMENT_DATA = res;
           if(id > 0){
 let index = _.findIndex(res, {id: id});
 res = res.slice(index, -1)//_.without(res, {id: 1})
@@ -136,9 +133,6 @@ res = res.slice(index, -1)//_.without(res, {id: 1})
     });
     this.allProducts =products;
   }
-  getUserCart(){
-    console.log(this.productService.getUserCart());
-  }
 
   onCartUpdated(){
     this.totalPrice = 0;
@@ -148,7 +142,6 @@ res = res.slice(index, -1)//_.without(res, {id: 1})
 }) => {
       this.totalPrice +=  element.price;
     });
-    console.log(this.productService.getUserCart(), "sa");
   }
 
   placeOrder(){
@@ -175,8 +168,6 @@ res = res.slice(index, -1)//_.without(res, {id: 1})
     res=>{
       this.toastrService.success("Product deleted successfully");
       this.getAllProducats(product.id)
-//console.log(this.dataSource.slice(0,-1))
-     // this.dataSource = _.without(this.dataSource, {id: product.id});
         }
    )
 
