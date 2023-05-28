@@ -19,8 +19,8 @@ import { TranslateService } from '@ngx-translate/core';
 export class ProductsListComponent implements OnInit {
 
   public selectedCategory: string = 'All Categories';
-  public allCategories: any =  [];
-  public allProducts: any = [];
+  public allCategories: string[] =  [];
+  public allProducts: IProduct[] = [];
   public pageNumber: number = 0;
   public pageSize: number = 50;
   public totalPrice: number = 0;
@@ -48,10 +48,14 @@ export class ProductsListComponent implements OnInit {
     translate.setDefaultLang('en');
 
     this.getCategoriesList();
-    this.getAllProducats(0);
+    this.getAllProducts(0);
    }
 
   ngOnInit(): void {
+   this.getLogedUser();
+  }
+
+  getLogedUser(){
     if (this.storageService.isLoggedIn()) {
       this.isLoggedIn = true;
       this.role = this.storageService.getUser().Role;
@@ -63,7 +67,6 @@ export class ProductsListComponent implements OnInit {
         window.location.href = '/app-store/Login';
     }
   }
-
   getCategoriesList(){
     this.productService.getAllCategories().subscribe(
       res=>{
@@ -75,7 +78,7 @@ export class ProductsListComponent implements OnInit {
     )
   }
 
-  getAllProducats(id: number){
+  getAllProducts(id: number){
     this.loading = true;
     this.productService.getProducts(this.pageNumber, this.pageSize).subscribe(
       res=>{
@@ -112,14 +115,14 @@ res = res.slice(index, -1)//_.without(res, {id: 1})
       )
     }
     else{
-      this.getAllProducats(0);
+      this.getAllProducts(0);
     }
   }
 
-  checkIfProductInCart(products: any){
+  checkIfProductInCart(products: []){
     products.forEach((element: {
       discountPercentage: number;
-      price: number; isAddedToCart: boolean; id: any; 
+      price: number; isAddedToCart: boolean; id: number; 
 }) => {
       element.isAddedToCart = false;
       let selectedProducts = this.productService.getUserCart();
@@ -156,18 +159,18 @@ res = res.slice(index, -1)//_.without(res, {id: 1})
 
   editProduct(product: IProduct){
     const addModalRef = this.modalService.open(AddProductComponent, { size: 'lg', backdrop: 'static' });
-    addModalRef.componentInstance.form = product;
+    addModalRef.componentInstance.editedProduct = product;
 
     
 
 
   }
 
-  deleteProduct (product: any){
+  deleteProduct (product: IProduct){
    this.productService.deleteProduct(product.id).subscribe(
     res=>{
       this.toastrService.success("Product deleted successfully");
-      this.getAllProducats(product.id)
+      this.getAllProducts(product.id)
         }
    )
 

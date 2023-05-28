@@ -3,6 +3,9 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ProductsService } from '../../services/products.service';
 import { ToastrService } from 'ngx-toastr';
 import { StorageService } from 'src/app/shared/_services/storage.service';
+import { IProduct } from '../../dataModels/product';
+import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
+
 
 @Component({
   selector: 'app-add-product',
@@ -10,20 +13,22 @@ import { StorageService } from 'src/app/shared/_services/storage.service';
   styleUrls: ['./add-product.component.scss']
 })
 export class AddProductComponent implements OnInit {
-  form: any = {
-    title: null,
-    description: null,
-    price: null,
-    image: null,
-    category: null,
-    id: 0
-  };
+
+  editedProduct : IProduct = {title: '', description: '', price: 0, id: 0, image: '', category: ''}
+  addProductForm = this.formBuilder.group({
+     title: new FormControl('', Validators.required),
+    description: new FormControl('', Validators.required),
+    price: new FormControl(0, Validators.required),
+    image: new FormControl(''),
+    category: new FormControl('', Validators.required),
+    id: new FormControl(0)
+  });
 
   public allCategories: any =  [];
 
   public inEditMode: boolean = false;
   loading:boolean = false;
-  constructor(public modal: NgbActiveModal, private productService: ProductsService,private toastr: ToastrService, private storageService: StorageService
+  constructor(public modal: NgbActiveModal, private productService: ProductsService,private toastr: ToastrService, private storageService: StorageService, private formBuilder: FormBuilder
     ) { 
       this.getCategoriesList();
     }
@@ -33,8 +38,16 @@ export class AddProductComponent implements OnInit {
   }
 
   checkInEditMode(){
-    if(this.form.title){
+    if(this.editedProduct.title){
       this.inEditMode = true;
+      this.addProductForm.patchValue({
+        title: this.editedProduct.title,
+        price: this.editedProduct.price,
+        category: this.editedProduct.category,
+        description: this.editedProduct.description,
+        image: this.editedProduct.image,
+        id: this.editedProduct.id
+      });
     }
   }
 
@@ -60,7 +73,7 @@ export class AddProductComponent implements OnInit {
 
   saveProduct(){
     if(this.inEditMode){
-      this.productService.updateProduct(this.form).subscribe(
+      this.productService.updateProduct(this.addProductForm.value).subscribe(
         res=>{
           this.toastr.success("Product Updated successfully");
           this.cancel();
@@ -72,7 +85,7 @@ export class AddProductComponent implements OnInit {
       )
     }
     else{
-      this.productService.addProduct(this.form).subscribe(
+      this.productService.addProduct(this.addProductForm.value).subscribe(
         res=>{
           this.toastr.success("Product added successfully");
           this.cancel();

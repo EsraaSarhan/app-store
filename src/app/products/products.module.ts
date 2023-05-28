@@ -13,6 +13,8 @@ import { FormsModule } from '@angular/forms';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { ReactiveFormsModule } from '@angular/forms';
+
 
 
 @NgModule({
@@ -31,6 +33,7 @@ import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
     MatPaginatorModule,
     FormsModule ,
     HttpClientModule,
+    ReactiveFormsModule,
     TranslateModule.forRoot({
         loader: {
             provide: TranslateLoader,

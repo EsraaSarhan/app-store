@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ProductsService } from '../../services/products.service';
 import {ToastrService } from 'ngx-toastr'
+import { IProduct } from '../../dataModels/product';
 
 @Component({
   selector: 'app-receipt',
@@ -10,7 +11,7 @@ import {ToastrService } from 'ngx-toastr'
 })
 export class ReceiptComponent implements OnInit {
 
-  public selectedItems: any = [];
+  public selectedItems: IProduct[] = [];
   public totalPrice: number = 0;
   constructor(public modal: NgbActiveModal, private productService: ProductsService,private toastr: ToastrService,
     ) { 
@@ -29,7 +30,7 @@ export class ReceiptComponent implements OnInit {
   confirmOrder(){
     this.toastr.success("Your order placed successfully");
 
-    this.selectedItems.forEach((element: any) => {
+    this.selectedItems.forEach((element: IProduct) => {
       this.productService.updateCart(element, 'remove');
     });
 

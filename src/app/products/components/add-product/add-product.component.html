@@ -14,11 +14,10 @@
 
 
 <div class="modal-body">
-    <form
-    name="form"
-    (ngSubmit)="f.form.valid && onSubmit()"
-    #f="ngForm"
+    <form [formGroup]="addProductForm"
+    name="addProductForm"
     novalidate
+    (ngSubmit)="onSubmit()"
   >
     <div class="form-group">
       <label for="title">{{'Title' | translate}}</label>
@@ -27,15 +26,18 @@
         class="form-control"
         name="title"
         placeholder="{{'Title' | translate}}"
-        [(ngModel)]="form.title"
+         formControlName="title"
         required
-        #title="ngModel"
-        [ngClass]="{ 'is-invalid': f.submitted && title.errors }"
+        [ngClass]="{ 'is-invalid':  (addProductForm.controls['title'].touched) && addProductForm.controls['title'].invalid}"
       />
-      <div *ngIf="title.errors && f.submitted" class="invalid-feedback">
+      <div *ngIf="(addProductForm.controls['title'].touched) && addProductForm.controls['title'].invalid" class="invalid-feedback">
         {{'TitleRequired' | translate}}
       </div>
     </div>
+
+   
+
+
     <div class="form-group">
       <label for="description">{{'Description' | translate}}</label>
       <textarea
@@ -43,19 +45,18 @@
         class="form-control"
         name="description"
         placeholder="{{'Description' | translate}}"
-        [(ngModel)]="form.description"
+         formControlName="description"
         required
         minlength="10"
-        maxlength="200"
-        #description="ngModel"
-        [ngClass]="{ 'is-invalid': f.submitted && description.errors }"
+        maxlength="250"
+        [ngClass]="{ 'is-invalid':  (addProductForm.controls['description'].touched)  && addProductForm.controls['description'].errors }"
       ></textarea>
-      <div *ngIf="description.errors && f.submitted" class="invalid-feedback">
-        <div *ngIf="description.errors['required']">description is required</div>
-        <div *ngIf="description.errors['minlength']">
+      <div *ngIf="(addProductForm.controls['description'].touched)  && addProductForm.controls['description'].errors" class="invalid-feedback">
+        <div *ngIf="addProductForm.controls['description'].errors['required']">description is required</div>
+        <div *ngIf="addProductForm.controls['description'].errors['minlength']">
           description must be at least 10 characters
         </div>
-        <div *ngIf="description.errors['maxlength']">
+        <div *ngIf="addProductForm.controls['description'].errors['maxlength']">
             description exceed maximum length
           </div>
       </div>
@@ -68,12 +69,12 @@
           class="form-control"
           name="price"
           placeholder="{{'Price' | translate}}"
-          [(ngModel)]="form.price"
+           formControlName="price"
           required
-          #price="ngModel"
-          [ngClass]="{ 'is-invalid': f.submitted && price.errors }"
+          min="1"
+          [ngClass]="{ 'is-invalid':  (addProductForm.controls['price'].touched)  && addProductForm.controls['price'].errors }"
         />
-        <div *ngIf="price.errors && f.submitted" class="invalid-feedback">
+        <div *ngIf=" (addProductForm.controls['price'].touched)   && addProductForm.controls['price'].errors" class="invalid-feedback">
           {{'PriceRequired' | translate}}
 
         </div>
@@ -81,17 +82,19 @@
 
       <div class="form-group">
         <label for="category">{{'Category' | translate}}</label>
-        <select class="form-select" #category="ngModel" required aria-label="Category"  [(ngModel)]="form.category" name="category">
+        <select class="form-select" 
+        [ngClass]="{ 'is-invalid':   (addProductForm.controls['category'].touched)   && addProductForm.controls['category'].errors }"
+        required aria-label="Category"   formControlName="category" name="category">
             <option *ngFor="let cat of allCategories" value="{{cat}}" >{{cat}}</option>
           </select>
 
-        <div *ngIf="category.errors && f.submitted" class="invalid-feedback">
+        <div *ngIf=" (addProductForm.controls['category'].touched)   && addProductForm.controls['category']" class="invalid-feedback">
             {{'TitleRequired' | translate}}
         </div>
       </div>
 
-      <button class="btn btn-primary btn-block w-100" [disabled]="loading">
-        <span *ngIf="!inEditMode">{{'AddProduct' | translate}}</span>
+      <button class="btn btn-primary btn-block w-100" [disabled]="loading || addProductForm.invalid">
+        <span *ngIf="!inEditMode" >{{'AddProduct' | translate}}</span>
         <span *ngIf="inEditMode">{{'UpdateProduct' | translate}}</span>
       
       </button>

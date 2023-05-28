@@ -4,7 +4,8 @@ export interface IProduct {
     description: string,
     image: string,
     category: string,
-    id: number
+    id: number,
+    isAddedToCart?: boolean
 }
 
 export interface ICategory {

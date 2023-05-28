@@ -15,15 +15,13 @@ export class ProductsService {
 
   constructor(private http: HttpClient) { }
 
-  //https://dummyjson.com/products/categories
 
   getAllCategories(){
-      return this.http.get<ICategory[]>('https://fakestoreapi.com/products/categories');
+      return this.http.get<string[]>('https://fakestoreapi.com/products/categories');
     
   }
 
   getProducts(count: number, pageNumber: number){
-  //  return this.http.get<any>('https://dummyjson.com/products?limit=' + count + '&skip=' + pageNumber);
   return this.http.get<any>('https://fakestoreapi.com/products?limit=' + count);
   
 }
@@ -35,16 +33,14 @@ export class ProductsService {
   }
 
 
-  //https://fakestoreapi.com/products
 
-  addProduct(product: IProduct){
+  addProduct(product: any){
     
     return this.http.post<IProduct>('https://fakestoreapi.com/products', product);
 
   }
 
-  updateProduct(product: IProduct){
-    //https://fakestoreapi.com/products/7
+  updateProduct(product: any){
     return this.http.put<IProduct>('https://fakestoreapi.com/products/' + product.id , product);
 
   }
